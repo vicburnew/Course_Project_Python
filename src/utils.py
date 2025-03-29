@@ -27,6 +27,7 @@ def time_of_a_day() -> tuple:
     с 12 до 18 часов — день, с 18 до 24 часов — вечер) и
     b) текущая дата и время как список строк"""
     date_hour_obj = datetime.datetime.now()
+    # print(date_hour_obj)
     date_hour_str = datetime.datetime.strftime(date_hour_obj, "%Y %m %d %H %M %S")
     date_of_now_list = date_hour_str.split()
     if 18 <= int(date_of_now_list[3]) <= 24:

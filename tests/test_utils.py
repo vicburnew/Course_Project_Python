@@ -1,6 +1,12 @@
 import pandas as pd
-from unittest.mock import mock_open, patch
-from src.utils import read_excel_file
+from unittest.mock import patch
+from unittest import mock
+from datetime import date, datetime
+import datetime
+
+from coverage.html import read_data
+
+from src.utils import read_excel_file, time_of_a_day
 import pytest
 
 
@@ -25,4 +31,22 @@ def test_read_excel_file_2():
         assert str(ex_info.value) == "Ошибка чтения .excel файла, ошибка: [Errno 2] No such file or directory: './data/operatons.xlsx'"
 
 
+
+@pytest.mark.parametrize("mock_in, mock_output", [
+    (5, "ночь"),
+    (0, "ночь"),
+    (12, "день"),
+    (17, "день"),
+    (23, "вечер"),
+    (18, "вечер"),
+    (6, "утро"),
+    (11, "утро")])
+
+def test_time_of_a_day(mock_in, mock_output):
+    """Тестирование функции возврата текущего времени суток"""
+    test_now = datetime.datetime(2024, 10, 10, mock_in, 10, 10)
+    with patch("datetime.datetime", wraps=datetime.datetime) as mock_date:
+        mock_date.now.return_value = test_now
+        result_1, result_2 = time_of_a_day()
+        assert  result_1 == mock_output
 
