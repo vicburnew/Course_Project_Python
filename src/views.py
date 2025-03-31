@@ -13,7 +13,10 @@ def main_user_interface(date_time_request:str) -> json:
         кешбэк (1 рубль на каждые 100 рублей).
     3. Топ-5 транзакций по сумме платежа.
     4. Курс валют.
-    5. Стоимость акций из S&P500."""
+    5. Стоимость акций из S&P500.
+
+
+    """
     result_json = json
 
     return result_json
