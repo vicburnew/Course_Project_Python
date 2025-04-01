@@ -81,4 +81,15 @@ def test_top_5_transactions(fixt_test_df, fixt_top_5_results):
     assert result == fixt_top_5_results
 
 
-
+    # Мокируем ответ от API чтобы избежать частых запросов и блокировки:
+    # mock_result_api_dict = {
+    #     "success": True,
+    #     "timestamp": 1743512704,
+    #     "base": "RUB",
+    #     "date": "2025-04-01",
+    #     "rates": {
+    #         "USD": 0.011778,
+    #         "EUR": 0.010921
+    #     }
+    # }
+    # result_api_dict = mock_result_api_dict

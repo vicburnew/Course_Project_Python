@@ -1,11 +1,15 @@
 from idlelib.iomenu import encoding
 
 import pandas as pd
+from mypy.util import json_loads
 from pandas import DataFrame
 import json
 import datetime
 
+import os
 
+import requests
+from dotenv import load_dotenv
 
 
 
@@ -88,10 +92,7 @@ def summary_by_card(input_df: DataFrame) -> list[dict]:
     # создаем список словарей для передачи в другую функцию:
     list_of_dicts = []
     for key, val in cards_and_expen_values_dict.items():
-        dict_for_json_1 = {}
-        dict_for_json_1["last_digits"] = key
-        dict_for_json_1["total_spent"] = val * -1
-        dict_for_json_1["cashback"] = round(val * 0.01 *-1, 2)
+        dict_for_json_1 = {"last_digits": key, "total_spent": val * -1, "cashback": round(val * 0.01 * -1, 2)}
         list_of_dicts.append(dict_for_json_1)
     # Формируем выход функции:
     summary_by_card_result = list_of_dicts
@@ -112,16 +113,50 @@ def top_5_transactions(input_df:DataFrame) -> list[dict]:
     # создаем список словарей для передачи в другую функцию:
     list_of_dicts = []
     for index, row in off_nan_df_amount_top_5.iterrows():
-        dict_for_json_2 = {}
-        dict_for_json_2["date"] = str(row["Дата платежа"])
-        dict_for_json_2["amount"] = row["Сумма платежа"]
-        dict_for_json_2["category"] = row["Категория"]
-        dict_for_json_2["description"] = row["Описание"]
+        dict_for_json_2 = {"date": str(row["Дата платежа"]), "amount": row["Сумма платежа"],
+                           "category": row["Категория"], "description": row["Описание"]}
         list_of_dicts.append(dict_for_json_2)
 
     top_5_transactions_result = list_of_dicts
     return top_5_transactions_result
 
+
+def get_currency_rates():
+    """Функция считывает данные user_currencies из файла user_settings.json, направляет запрос на
+     внешний API и возвращает ответ с текущими курсами валют к рублю в виде списка словарей:
+     [{"currency": "USD",
+      "rate": 73.21},
+    {"currency": "EUR",
+      "rate": 87.08}]"""
+    # Загружаем данные из файла .env
+    load_dotenv()
+    # выделяем оттуда ключ API для сервиса APIlayer
+    api_key = os.getenv("API_KEY")
+    # cчитываем данные из файла user_settings.json:
+    ## ПРИ ЗАПУСКЕ PYTEST УБРАТЬ ОДНУ ТОЧКУ ИЗ ПУТИ К ФАЙЛУ
+    with open("../user_settings.json", "r", encoding="utf-8") as file:
+        user_settings_dict = json.load(file)
+    # Формируем строку с перечнем валют для передачи в API
+    currencies = ",".join(user_settings_dict["user_currencies"])
+    # Формируем строку URL
+    url = f"https://api.apilayer.com/exchangerates_data/latest?symbols={currencies}&base=RUB"
+    headers = {"apikey": api_key}
+    # Направляем запрос в API
+    response = requests.get(url, headers=headers)
+    # Вызываем исключение если был ответ с ошибкой:
+    if response.status_code != 200:
+        raise Exception("проверьте параметры запроса и повторите его")
+    # Получаем ответ в виде словаря:
+    result_api_dict = response.json()
+    # Выделяем словарь с валютами:
+    result_api_dict_curr = result_api_dict["rates"]
+    # создаем список словарей для передачи в другую функцию:
+    list_of_dicts = []
+    for key, val in result_api_dict_curr.items():
+        dict_for_json_3 = {"currency": key, "rate": round(1 / val, 2)}
+        list_of_dicts.append(dict_for_json_3)
+    get_currency_rates_result = list_of_dicts
+    return get_currency_rates_result
 
 
 # a = read_excel_file("../data/operations.xlsx")
@@ -132,6 +167,8 @@ def top_5_transactions(input_df:DataFrame) -> list[dict]:
 # # print(c)
 # # print(d)
 
+a = get_currency_rates()
+print(a)
 
 
 # a = off_nan_df_filtered_by_expen.to_json(force_ascii=False, orient="records")
