@@ -64,7 +64,7 @@ def filter_df_by_date(input_df: DataFrame, input_day_time:str) -> DataFrame:
     start_day_time_pd = pd.to_datetime(start_date_str)
     # Производим выборку (фильтрацию) df по заданной и начальной датам:
     off_nan_df_filtered_by_dates = off_nan_df[
-        (pd.to_datetime(off_nan_df["Дата операции"], dayfirst=True) < input_day_time_pd) &
+        (pd.to_datetime(off_nan_df["Дата операции"], dayfirst=True) <= input_day_time_pd) &
         (pd.to_datetime(off_nan_df["Дата операции"], dayfirst=True) > start_day_time_pd)]
     filtered_by_date_df = off_nan_df_filtered_by_dates
     return filtered_by_date_df
@@ -125,11 +125,12 @@ def top_5_transactions(input_df:DataFrame) -> list[dict]:
 
 
 # a = read_excel_file("../data/operations.xlsx")
-# b = filter_df_by_date(a,"2021-12-24 14:58:38")
-# c = summary_by_card(b)
-# d = top_5_transactions(b)
-# print(c)
-# print(d)
+# b = filter_df_by_date(a,"2021-12-23 22:33:11")
+# # c = summary_by_card(b)
+# # d = top_5_transactions(b)
+# print(b)
+# # print(c)
+# # print(d)
 
 
 

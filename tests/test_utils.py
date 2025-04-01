@@ -6,12 +6,12 @@ import datetime
 
 from coverage.html import read_data
 
-from src.utils import read_excel_file, time_of_a_day, summary_by_card
+from src.utils import read_excel_file, time_of_a_day, summary_by_card, filter_df_by_date, top_5_transactions
 import pytest
 
+from tests.conftest import fixt_test_df
 
 # Тестирование функции read_excel_file
-
 mock_data_df = pd.DataFrame({"Дата операции": ["31.12.2021 16:44:00"], "Дата платежа": ["31.12.2021"], "Номер карты": ["*7197"], "Статус":["OK"]})
 
 def test_read_excel_file_1(mock_excel_dict_fixt):
@@ -31,8 +31,8 @@ def test_read_excel_file_2():
         assert str(ex_info.value) == "Ошибка чтения .excel файла, ошибка: [Errno 2] No such file or directory: './data/operatons.xlsx'"
 
 
-# Тестирование функции time_of_a_day
 
+# Тестирование функции time_of_a_day
 @pytest.mark.parametrize("mock_in, mock_output", [
     (5, "ночь"),
     (0, "ночь"),
@@ -51,15 +51,34 @@ def test_time_of_a_day(mock_in, mock_output):
         result_1, result_2 = time_of_a_day()
         assert  result_1 == mock_output
 
-# Тестирование функции summary_by_card
 
-def test_summary_by_card_1(fixt_test_df, fixt_card_result):
-    """Положительное тестирование функции выдачи сводных данных по картам"""
-    a = summary_by_card(fixt_test_df, "2021-12-24 14:58:38")
-    assert a == fixt_card_result
 
-def test_summary_by_card_2(fixt_test_df):
-    """Отрицательное тестирование функции выдачи сводных данных по картам"""
+# Тестирование функции filter_df_by_date
+def test_filter_df_by_date(fixt_test_df, fixt_test_df_dict):
+    """Положительное тестирование функции"""
+    result = filter_df_by_date(fixt_test_df, "2021-12-25 13:04:15")
+    result_dict = result.to_dict(orient="records")
+    assert result_dict == fixt_test_df_dict
+
+def test_filter_df_by_date_2(fixt_test_df, fixt_test_df_dict):
+    """Отрицательное тестирование функции"""
     with pytest.raises(Exception):
-        a = summary_by_card(fixt_test_df,"2021-05-32 14:58:38" )
+        a = filter_df_by_date(fixt_test_df, "2021-05-32 13:04:15" )
+
+
+
+# Тестирование функции summary_by_card
+def test_summary_by_card_1(fixt_test_df, fixt_card_result):
+    """Тестирование функции выдачи сводных данных по картам"""
+    result = summary_by_card(fixt_test_df)
+    assert result == fixt_card_result
+
+
+# Тестирование функции top_5_transactions
+def test_top_5_transactions(fixt_test_df, fixt_top_5_results):
+    """Тестирование функции выдачи первых 5 максимальных транзакций"""
+    result = top_5_transactions(fixt_test_df)
+    assert result == fixt_top_5_results
+
+
 
