@@ -6,7 +6,8 @@ import datetime
 
 from coverage.html import read_data
 
-from src.utils import read_excel_file, time_of_a_day, summary_by_card, filter_df_by_date, top_5_transactions
+from src.utils import read_excel_file, time_of_a_day, summary_by_card, filter_df_by_date, top_5_transactions, \
+    get_currency_rates
 import pytest
 
 from tests.conftest import fixt_test_df
@@ -80,16 +81,29 @@ def test_top_5_transactions(fixt_test_df, fixt_top_5_results):
     result = top_5_transactions(fixt_test_df)
     assert result == fixt_top_5_results
 
+# Тестирование функции get_currency_rates
+@patch("requests.get")
+def test_get_currency_rates_1(mocked_get):
+    """Тестирование функции вывода текущих значений курсов валют """
+    ## ПРИ ЗАПУСКЕ PYTEST УБРАТЬ ОДНУ ТОЧКУ ИЗ ПУТИ К ФАЙЛУ user_settings.json
+    mocked_get.return_value.status_code = 200
+    mocked_get.return_value.json.return_value = {
+        "success": True,
+        "timestamp": 1743512704,
+        "base": "RUB",
+        "date": "2025-04-01",
+        "rates": {
+            "USD": 0.011778,
+            "EUR": 0.010921
+        }
+    }
+    result = get_currency_rates()
+    assert result == [{'currency': 'USD', 'rate': 84.9}, {'currency': 'EUR', 'rate': 91.57}]
 
-    # Мокируем ответ от API чтобы избежать частых запросов и блокировки:
-    # mock_result_api_dict = {
-    #     "success": True,
-    #     "timestamp": 1743512704,
-    #     "base": "RUB",
-    #     "date": "2025-04-01",
-    #     "rates": {
-    #         "USD": 0.011778,
-    #         "EUR": 0.010921
-    #     }
-    # }
-    # result_api_dict = mock_result_api_dict
+@patch("requests.get")
+def test_get_currency_rates_2(mocked_get):
+    """Отрицательный тест на работу функции - код возврата не равен 200"""
+    mocked_get.return_value.status_code = 201
+    with pytest.raises(Exception):
+       get_currency_rates()
+

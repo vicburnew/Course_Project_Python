@@ -134,7 +134,7 @@ def get_currency_rates():
     api_key = os.getenv("API_KEY")
     # cчитываем данные из файла user_settings.json:
     ## ПРИ ЗАПУСКЕ PYTEST УБРАТЬ ОДНУ ТОЧКУ ИЗ ПУТИ К ФАЙЛУ
-    with open("../user_settings.json", "r", encoding="utf-8") as file:
+    with open("./user_settings.json", "r", encoding="utf-8") as file:
         user_settings_dict = json.load(file)
     # Формируем строку с перечнем валют для передачи в API
     currencies = ",".join(user_settings_dict["user_currencies"])
@@ -166,9 +166,9 @@ def get_currency_rates():
 # print(b)
 # # print(c)
 # # print(d)
-
-a = get_currency_rates()
-print(a)
+#
+# a = get_currency_rates()
+# print(a)
 
 
 # a = off_nan_df_filtered_by_expen.to_json(force_ascii=False, orient="records")

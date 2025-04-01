@@ -1,8 +1,7 @@
 {
   "user_currencies": [
     "USD",
-    "EUR",
-    "CNY"
+    "EUR"
   ],
   "user_stocks": [
     "AAPL",
