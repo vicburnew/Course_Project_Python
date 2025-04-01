@@ -79,9 +79,9 @@ def summary_by_card(input_df: DataFrame, input_day_time:str) -> list[dict]:
     # Переводим в словарь пары "ключ - номер карты", "значение - величина расходов", убирая ключ "Сумма платежа"
     cards_and_expen_values_dict = cards_and_expen_values_df.to_dict()["Сумма платежа"]
     # создаем список словарей для передачи в другую функцию:
-    dict_for_json_1 = {}
     list_of_dicts = []
     for key, val in cards_and_expen_values_dict.items():
+        dict_for_json_1 = {}
         dict_for_json_1["last_digits"] = key
         dict_for_json_1["total_spent"] = val * -1
         dict_for_json_1["cashback"] = round(val * 0.01 *-1, 2)
@@ -91,9 +91,9 @@ def summary_by_card(input_df: DataFrame, input_day_time:str) -> list[dict]:
     return summary_by_card_result
 
 
-a = read_excel_file("../data/operations.xlsx")
-b = summary_by_card(a,"2021-12-24 14:58:38")
-print(b)
+# a = read_excel_file("../data/operations.xlsx")
+# b = summary_by_card(a,"2019-12-24 14:58:38")
+# print(b)
 
 
 

@@ -6,7 +6,7 @@ import datetime
 
 from coverage.html import read_data
 
-from src.utils import read_excel_file, time_of_a_day
+from src.utils import read_excel_file, time_of_a_day, summary_by_card
 import pytest
 
 
@@ -31,6 +31,7 @@ def test_read_excel_file_2():
         assert str(ex_info.value) == "Ошибка чтения .excel файла, ошибка: [Errno 2] No such file or directory: './data/operatons.xlsx'"
 
 
+# Тестирование функции time_of_a_day
 
 @pytest.mark.parametrize("mock_in, mock_output", [
     (5, "ночь"),
@@ -49,4 +50,16 @@ def test_time_of_a_day(mock_in, mock_output):
         mock_date.now.return_value = test_now
         result_1, result_2 = time_of_a_day()
         assert  result_1 == mock_output
+
+# Тестирование функции summary_by_card
+
+def test_summary_by_card_1(fixt_test_df, fixt_card_result):
+    """Положительное тестирование функции выдачи сводных данных по картам"""
+    a = summary_by_card(fixt_test_df, "2021-12-24 14:58:38")
+    assert a == fixt_card_result
+
+def test_summary_by_card_2(fixt_test_df):
+    """Отрицательное тестирование функции выдачи сводных данных по картам"""
+    with pytest.raises(Exception):
+        a = summary_by_card(fixt_test_df,"2021-05-32 14:58:38" )
 
