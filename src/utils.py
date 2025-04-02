@@ -1,13 +1,8 @@
-from idlelib.iomenu import encoding
-
 import pandas as pd
-from mypy.util import json_loads
 from pandas import DataFrame
 import json
 import datetime
-
 import os
-
 import requests
 from dotenv import load_dotenv
 
@@ -26,7 +21,7 @@ def read_excel_file(path_file: str) -> DataFrame:
     return operations_df
 
 
-def time_of_a_day() -> tuple:
+def time_of_a_day() -> str:
     """Функция возвращает два значения:
     a) текущее время суток - "утро", "день", "вечер", "ночь.
     (Принята следующая система: с 0 до 6 часов — ночь, с 6 до 12 часов — утро,
@@ -36,14 +31,14 @@ def time_of_a_day() -> tuple:
     date_hour_str = datetime.datetime.strftime(date_hour_obj, "%Y %m %d %H %M %S")
     date_of_now_list = date_hour_str.split()
     if 18 <= int(date_of_now_list[3]) <= 24:
-        time_of_day_now = "вечер"
+        time_of_day_now = "Добрый вечер"
     elif 12 <= int(date_of_now_list[3]) < 18:
-        time_of_day_now = "день"
+        time_of_day_now = "Добрый день"
     elif 6 <= int(date_of_now_list[3]) < 12:
-        time_of_day_now = "утро"
+        time_of_day_now = "Доброе утро"
     else:
-        time_of_day_now = "ночь"
-    return time_of_day_now, date_of_now_list
+        time_of_day_now = "Доброй ночи"
+    return time_of_day_now
 
 
 def filter_df_by_date(input_df: DataFrame, input_day_time: str) -> DataFrame:
@@ -120,7 +115,7 @@ def top_5_transactions(input_df: DataFrame) -> list[dict]:
     return top_5_transactions_result
 
 
-def get_currency_rates():
+def get_currency_rates() -> list[dict]:
     """Функция считывает данные user_currencies из файла user_settings.json, направляет запрос на
      внешний API и возвращает ответ с текущими курсами валют к рублю в виде списка словарей:
      [{"currency": "USD",
@@ -133,7 +128,7 @@ def get_currency_rates():
     api_key = os.getenv("API_KEY_1")
     # cчитываем данные из файла user_settings.json:
     ## ПРИ ЗАПУСКЕ PYTEST УБРАТЬ ОДНУ ТОЧКУ ИЗ ПУТИ К ФАЙЛУ
-    with open("./user_settings.json", "r", encoding="utf-8") as file:
+    with open("../user_settings.json", "r", encoding="utf-8") as file:
         user_settings_dict = json.load(file)
     # Формируем строку с перечнем валют для передачи в API
     currencies = ",".join(user_settings_dict["user_currencies"])
@@ -158,7 +153,7 @@ def get_currency_rates():
     return get_currency_rates_result
 
 
-def get_stock_prices():
+def get_stock_prices() -> list[dict]:
     """Функция считывает данные user_stocks из файла user_settings.json, направляет запрос на
      внешний API и возвращает ответ с текущими котировками в виде списка словарей:
       "stock_prices": [{
@@ -178,7 +173,7 @@ def get_stock_prices():
     api_key = os.getenv("API_KEY_2")
     # cчитываем данные из файла user_settings.json:
     ## ПРИ ЗАПУСКЕ PYTEST УБРАТЬ ОДНУ ТОЧКУ ИЗ ПУТИ К ФАЙЛУ
-    with open("./user_settings.json", "r", encoding="utf-8") as file:
+    with open("../user_settings.json", "r", encoding="utf-8") as file:
         user_settings_dict = json.load(file)
     # Формируем строку с перечнем валют для передачи в API
     stocks = ",".join(user_settings_dict["user_stocks"])
@@ -208,18 +203,4 @@ def get_stock_prices():
     return get_stock_prices_result
 
 
-# a = read_excel_file("../data/operations.xlsx")
-# b = filter_df_by_date(a,"2021-12-23 22:33:11")
-# # c = summary_by_card(b)
-# # d = top_5_transactions(b)
-# print(b)
-# # print(c)
-# # print(d)
-#
-# e = get_currency_rates()
-# print(e)
 
-# f = get_stock_prices()
-# print(f)
-
-# a = off_nan_df_filtered_by_expen.to_json(force_ascii=False, orient="records")
