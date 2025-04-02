@@ -3,7 +3,6 @@ import re
 import pandas as pd
 from pandas import DataFrame
 
-from src.utils import read_excel_file
 
 pd.options.mode.copy_on_write = True
 
@@ -32,5 +31,6 @@ def transfers_to_people(input_df: DataFrame) -> json:
     # переводим словарь в формат JSON:
     result_json = json.dumps(list_of_people, ensure_ascii=False, indent=4)
     return result_json
+
 
 # print(transfers_to_people())

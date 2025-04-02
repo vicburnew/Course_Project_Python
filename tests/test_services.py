@@ -1,4 +1,3 @@
-from unittest.mock import patch
 
 from src.services import transfers_to_people
 
