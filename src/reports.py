@@ -18,7 +18,10 @@ def spending_by_category(input_df: DataFrame, input_cat: str, input_date: Option
     if input_date is None:
         start_date_obj_0 = datetime.datetime.now()
     else:
-        start_date_obj_0 = datetime.datetime.strptime(input_date, "%Y-%m-%d")
+        try:
+            start_date_obj_0 = datetime.datetime.strptime(input_date, "%Y-%m-%d")
+        except Exception as ex:
+            print(f"Ошибка ввода даты: {ex}")
     # Изменяем в объекте времени-даты время на максимальное:
     start_date_obj = start_date_obj_0.replace(hour=23, minute=59, second=59)
     # Определяем конечную дату для выборки (минус три месяца = 90 дней)
@@ -49,7 +52,7 @@ def spending_by_category(input_df: DataFrame, input_cat: str, input_date: Option
 
 
 a = read_excel_file("../data/operations.xlsx")
-b = spending_by_category(a, "фастфуд", '2021-04-30')
+b = spending_by_category(a, "переводЫ", '2021-04-30')
 print(b)
 
 
