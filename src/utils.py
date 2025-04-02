@@ -12,8 +12,7 @@ import requests
 from dotenv import load_dotenv
 
 
-
-def read_excel_file(path_file:str) -> DataFrame:
+def read_excel_file(path_file: str) -> DataFrame:
     """Функция читает данные из файла 'operations.xlsx', расположенного
     в папке ../data и возвращает DataFrame с данными о финансовых транзакциях.
     Если файл пустой, содержит не список или не найден,
@@ -47,7 +46,7 @@ def time_of_a_day() -> tuple:
     return time_of_day_now, date_of_now_list
 
 
-def filter_df_by_date(input_df: DataFrame, input_day_time:str) -> DataFrame:
+def filter_df_by_date(input_df: DataFrame, input_day_time: str) -> DataFrame:
     """Функция получает на вход DataFrame и строку дату-время в формате YYYY-MM-DD HH:MM:SS
     и возвращает DataFrame, отфильтрованный по датам с начала месяца до введенной даты"""
     # Очищаем DataFrame от пустых (Nan) полей, заменяем их на 0
@@ -99,7 +98,7 @@ def summary_by_card(input_df: DataFrame) -> list[dict]:
     return summary_by_card_result
 
 
-def top_5_transactions(input_df:DataFrame) -> list[dict]:
+def top_5_transactions(input_df: DataFrame) -> list[dict]:
     """Функция получает на вход DataFrame и возвращает Топ-5 транзакций
     по сумме платежа в формате списка словарей:
       - "date": "21.12.2021",
@@ -131,7 +130,7 @@ def get_currency_rates():
     # Загружаем данные из файла .env
     load_dotenv()
     # выделяем оттуда ключ API для сервиса APIlayer
-    api_key = os.getenv("API_KEY")
+    api_key = os.getenv("API_KEY_1")
     # cчитываем данные из файла user_settings.json:
     ## ПРИ ЗАПУСКЕ PYTEST УБРАТЬ ОДНУ ТОЧКУ ИЗ ПУТИ К ФАЙЛУ
     with open("./user_settings.json", "r", encoding="utf-8") as file:
@@ -159,6 +158,56 @@ def get_currency_rates():
     return get_currency_rates_result
 
 
+def get_stock_prices():
+    """Функция считывает данные user_stocks из файла user_settings.json, направляет запрос на
+     внешний API и возвращает ответ с текущими котировками в виде списка словарей:
+      "stock_prices": [{
+      "stock": "AAPL",
+      "price": 150.12},
+    {"stock": "AMZN",
+      "price": 3173.18},
+    {"stock": "GOOGL",
+      "price": 2742.39},
+    {"stock": "MSFT",
+      "price": 296.71},
+    {"stock": "TSLA",
+      "price": 1007.08}]"""
+    # Загружаем данные из файла .env
+    load_dotenv()
+    # выделяем оттуда ключ API для сервиса marketstack
+    api_key = os.getenv("API_KEY_2")
+    # cчитываем данные из файла user_settings.json:
+    ## ПРИ ЗАПУСКЕ PYTEST УБРАТЬ ОДНУ ТОЧКУ ИЗ ПУТИ К ФАЙЛУ
+    with open("./user_settings.json", "r", encoding="utf-8") as file:
+        user_settings_dict = json.load(file)
+    # Формируем строку с перечнем валют для передачи в API
+    stocks = ",".join(user_settings_dict["user_stocks"])
+    # Формируем строку URL
+    url = f"https://api.marketstack.com/v1/eod/latest?access_key={api_key}"
+    querystring = {"symbols": stocks}
+    # Направляем запрос в API
+    response = requests.get(url, params=querystring)
+    # Вызываем исключение если был ответ с ошибкой:
+    if response.status_code != 200:
+        raise Exception("проверьте параметры запроса и повторите его")
+    # Получаем ответ в виде словаря:
+    result_api_stocks_dict = response.json()
+    # создаем список словарей для передачи в другую функцию:
+    result_api_stocks_dict_list = result_api_stocks_dict["data"]
+    list_of_dicts = []
+    for record_dict in result_api_stocks_dict_list:
+        dict_for_json_4 = {}
+        for key, val in record_dict.items():
+            if key == "symbol":
+                dict_for_json_4["stock"] = val
+            if key == "close":
+                dict_for_json_4["price"] = val
+        list_of_dicts.append(dict_for_json_4)
+
+    get_stock_prices_result = list_of_dicts
+    return get_stock_prices_result
+
+
 # a = read_excel_file("../data/operations.xlsx")
 # b = filter_df_by_date(a,"2021-12-23 22:33:11")
 # # c = summary_by_card(b)
@@ -167,8 +216,10 @@ def get_currency_rates():
 # # print(c)
 # # print(d)
 #
-# a = get_currency_rates()
-# print(a)
+# e = get_currency_rates()
+# print(e)
 
+# f = get_stock_prices()
+# print(f)
 
 # a = off_nan_df_filtered_by_expen.to_json(force_ascii=False, orient="records")

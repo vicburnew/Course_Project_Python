@@ -107,3 +107,25 @@ def test_get_currency_rates_2(mocked_get):
     with pytest.raises(Exception):
        get_currency_rates()
 
+# Тестирование функции get_stock_prices
+@patch("requests.get")
+def test_get_stock_prices(mocked_get):
+    """Тестирование функции вывода текущих значений курсов акций """
+    ## ПРИ ЗАПУСКЕ PYTEST УБРАТЬ ОДНУ ТОЧКУ ИЗ ПУТИ К ФАЙЛУ user_settings.json
+    mocked_get.return_value.status_code = 200
+    mocked_get.return_value.json.return_value = {'pagination': {'limit': 100, 'offset': 0, 'count': 5, 'total': 5}, 'data': [
+        {'open': 219.805, 'high': 223.49, 'low': 218.9, 'close': 223.19, 'volume': 36361327.0, 'adj_high': 223.68,
+         'adj_low': 218.9, 'adj_close': 223.19, 'adj_open': 219.805, 'adj_volume': 36412740.0, 'split_factor': 1.0,
+         'dividend': 0.0, 'symbol': 'AAPL', 'exchange': 'XNAS', 'date': '2025-04-01T00:00:00+0000'},
+        {'open': 187.86, 'high': 193.93, 'low': 187.2, 'close': 192.17, 'volume': 41267315.0, 'adj_high': 193.93,
+         'adj_low': 187.2, 'adj_close': 192.17, 'adj_open': 187.86, 'adj_volume': 41267315.0, 'split_factor': 1.0,
+         'dividend': 0.0, 'symbol': 'AMZN', 'exchange': 'XNAS', 'date': '2025-04-01T00:00:00+0000'},
+        {'open': 153.62, 'high': 158.1, 'low': 153.62, 'close': 157.07, 'volume': 30672899.0, 'adj_high': 158.1,
+         'adj_low': 153.62, 'adj_close': 157.07, 'adj_open': 153.62, 'adj_volume': 30601490.0, 'split_factor': 1.0,
+         'dividend': 0.0, 'symbol': 'GOOGL', 'exchange': 'XNAS', 'date': '2025-04-01T00:00:00+0000'},
+        {'open': 374.655, 'high': 382.85, 'low': 373.23, 'close': 382.19, 'volume': 19431057.0, 'adj_high': 382.85,
+         'adj_low': 373.23, 'adj_close': 382.19, 'adj_open': 374.65, 'adj_volume': 19689503.0, 'split_factor': 1.0,
+         'dividend': 0.0, 'symbol': 'MSFT', 'exchange': 'XNAS', 'date': '2025-04-01T00:00:00+0000'},
+        {'open': 263.8, 'high': 277.45, 'low': 259.25, 'close': 268.46, 'volume': 146486911.0, 'adj_high': 277.45,
+         'adj_low': 259.25, 'adj_close': 268.46, 'adj_open': 263.8, 'adj_volume': 143339801.0, 'split_factor': 1.0,
+         'dividend': 0.0, 'symbol': 'TSLA', 'exchange': 'XNAS', 'date': '2025-04-01T00:00:00+0000'}]}
