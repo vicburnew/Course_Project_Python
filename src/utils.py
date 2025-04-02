@@ -52,18 +52,19 @@ def filter_df_by_date(input_df: DataFrame, input_day_time: str) -> DataFrame:
     except Exception as ex:
         print(f"Ошибка ввода даты: {ex}")
     # Определяем начальную дату для фильтрации:
-    ## Выделяем год и переводим в строку
+    # Выделяем год и переводим в строку
     start_year_str = str(input_day_time_pd.year)
-    ## Выделяем месяц и переводим в строку
+    # Выделяем месяц и переводим в строку
     start_month_str = str(input_day_time_pd.month)
-    ## Формируем полную строку
+    # Формируем полную строку
     start_date_str = start_year_str + "-" + start_month_str + "-" + "01"
-    ## Переводим ее в формат pd_time
+    # Переводим ее в формат pd_time
     start_day_time_pd = pd.to_datetime(start_date_str)
     # Производим выборку (фильтрацию) df по заданной и начальной датам:
     off_nan_df_filtered_by_dates = off_nan_df[
-        (pd.to_datetime(off_nan_df["Дата операции"], dayfirst=True) <= input_day_time_pd) &
-        (pd.to_datetime(off_nan_df["Дата операции"], dayfirst=True) > start_day_time_pd)]
+        (pd.to_datetime(off_nan_df["Дата операции"], dayfirst=True) <= input_day_time_pd)
+        & (pd.to_datetime(off_nan_df["Дата операции"], dayfirst=True) > start_day_time_pd)
+    ]
     filtered_by_date_df = off_nan_df_filtered_by_dates
     return filtered_by_date_df
 
@@ -107,8 +108,12 @@ def top_5_transactions(input_df: DataFrame) -> list[dict]:
     # создаем список словарей для передачи в другую функцию:
     list_of_dicts = []
     for index, row in off_nan_df_amount_top_5.iterrows():
-        dict_for_json_2 = {"date": str(row["Дата платежа"]), "amount": row["Сумма платежа"],
-                           "category": row["Категория"], "description": row["Описание"]}
+        dict_for_json_2 = {
+            "date": str(row["Дата платежа"]),
+            "amount": row["Сумма платежа"],
+            "category": row["Категория"],
+            "description": row["Описание"],
+        }
         list_of_dicts.append(dict_for_json_2)
 
     top_5_transactions_result = list_of_dicts
@@ -127,8 +132,8 @@ def get_currency_rates() -> list[dict]:
     # выделяем оттуда ключ API для сервиса APIlayer
     api_key = os.getenv("API_KEY_1")
     # cчитываем данные из файла user_settings.json:
-    ## ПРИ ЗАПУСКЕ PYTEST УБРАТЬ ОДНУ ТОЧКУ ИЗ ПУТИ К ФАЙЛУ
-    with open("../user_settings.json", "r", encoding="utf-8") as file:
+    # ПРИ ЗАПУСКЕ PYTEST УБРАТЬ ОДНУ ТОЧКУ ИЗ ПУТИ К ФАЙЛУ
+    with open("./user_settings.json", "r", encoding="utf-8") as file:
         user_settings_dict = json.load(file)
     # Формируем строку с перечнем валют для передачи в API
     currencies = ",".join(user_settings_dict["user_currencies"])
@@ -172,8 +177,8 @@ def get_stock_prices() -> list[dict]:
     # выделяем оттуда ключ API для сервиса marketstack
     api_key = os.getenv("API_KEY_2")
     # cчитываем данные из файла user_settings.json:
-    ## ПРИ ЗАПУСКЕ PYTEST УБРАТЬ ОДНУ ТОЧКУ ИЗ ПУТИ К ФАЙЛУ
-    with open("../user_settings.json", "r", encoding="utf-8") as file:
+    # ПРИ ЗАПУСКЕ PYTEST УБРАТЬ ОДНУ ТОЧКУ ИЗ ПУТИ К ФАЙЛУ
+    with open("./user_settings.json", "r", encoding="utf-8") as file:
         user_settings_dict = json.load(file)
     # Формируем строку с перечнем валют для передачи в API
     stocks = ",".join(user_settings_dict["user_stocks"])
@@ -201,6 +206,3 @@ def get_stock_prices() -> list[dict]:
 
     get_stock_prices_result = list_of_dicts
     return get_stock_prices_result
-
-
-

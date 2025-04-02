@@ -1,10 +1,18 @@
 import json
 
-from src.utils import read_excel_file, filter_df_by_date, time_of_a_day, summary_by_card, top_5_transactions, \
-    get_currency_rates, get_stock_prices
+from src.utils import (
+    read_excel_file,
+    filter_df_by_date,
+    time_of_a_day,
+    summary_by_card,
+    top_5_transactions,
+    get_currency_rates,
+    get_stock_prices,
+)
 
 
 # В данном модуле реализованы основные функции для генерации JSON-ответов
+
 
 def main_user_interface(date_time_request: str) -> json:
     """Функция, принимающая на вход строку с датой и временем в формате YYYY-MM-DD HH:MM:SS
@@ -34,15 +42,18 @@ def main_user_interface(date_time_request: str) -> json:
     # Вызываем функцию получения курсов акций:
     stock_prices_list = get_stock_prices()
     # создаем словарь для вывода результата:
-    result_dict = {"greeting": greeting,
-                   "cards": cards_summary_list,
-                   "top_transactions": top_5_transactions_list,
-                   "currency_rates": curr_rates_list,
-                   "stock_prices": stock_prices_list}
+    result_dict = {
+        "greeting": greeting,
+        "cards": cards_summary_list,
+        "top_transactions": top_5_transactions_list,
+        "currency_rates": curr_rates_list,
+        "stock_prices": stock_prices_list,
+    }
     # переводим словарь в формат JSON:
     result_json = json.dumps(result_dict, ensure_ascii=False, indent=4)
 
     return result_json
+
 
 #
 # a = main_user_interface("2021-12-21 13:04:15")
