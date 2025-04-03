@@ -22,7 +22,7 @@ def main_user_interface(date_time_request: str) -> json:
     # Вызываем функцию чтения текущего времени суток:
     greeting = time_of_a_day()
     # Вызываем функцию чтения исходного excel-файла:
-    initial_df = read_excel_file("../data/operations.xlsx")
+    initial_df = read_excel_file("./data/operations.xlsx")
     # Вызываем функцию фильтрации полученного DataFrame по датам:
     dates_filtered_df = filter_df_by_date(initial_df, date_time_request)
     # Вызываем функцию суммирования операций по картам:
@@ -47,6 +47,3 @@ def main_user_interface(date_time_request: str) -> json:
     return result_json
 
 
-#
-# a = main_user_interface("2021-12-21 13:04:15")
-# print(a)

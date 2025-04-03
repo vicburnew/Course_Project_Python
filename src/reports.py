@@ -85,8 +85,3 @@ def spending_by_category(input_df: DataFrame, input_cat: str, input_date: Option
     return spending_by_category_result
 
 
-#
-# a = read_excel_file("../data/operations.xlsx")
-# b = spending_by_category(a, "переводЫ", '2021-04-30')
-# print(b)
-#
