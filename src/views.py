@@ -1,15 +1,7 @@
 import json
 
-from src.utils import (
-    read_excel_file,
-    filter_df_by_date,
-    time_of_a_day,
-    summary_by_card,
-    top_5_transactions,
-    get_currency_rates,
-    get_stock_prices,
-)
-
+from src.utils import (filter_df_by_date, get_currency_rates, get_stock_prices, read_excel_file, summary_by_card,
+                       time_of_a_day, top_5_transactions)
 
 # В данном модуле реализованы основные функции для генерации JSON-ответов
 

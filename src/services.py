@@ -1,8 +1,9 @@
 import json
+import logging
 import re
+
 import pandas as pd
 from pandas import DataFrame
-import logging
 
 pd.options.mode.copy_on_write = True
 
@@ -14,6 +15,7 @@ file_handler = logging.FileHandler("./logs/services.log", "w", encoding="utf-8")
 file_formatter = logging.Formatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s")
 file_handler.setFormatter(file_formatter)
 logger.addHandler(file_handler)
+
 
 def transfers_to_people(input_df: DataFrame) -> json:
     """Функция получает на вход DataFrame и возвращает JSON-ответ со всеми транзакциями,
@@ -41,5 +43,3 @@ def transfers_to_people(input_df: DataFrame) -> json:
     result_json = json.dumps(list_of_people, ensure_ascii=False, indent=4)
     logger.info("Функция transfers_to_people завершена успешно")
     return result_json
-
-

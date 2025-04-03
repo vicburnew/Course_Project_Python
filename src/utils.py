@@ -1,11 +1,12 @@
-import pandas as pd
-from pandas import DataFrame
-import json
 import datetime
+import json
+import logging
 import os
+
+import pandas as pd
 import requests
 from dotenv import load_dotenv
-import logging
+from pandas import DataFrame
 
 # Создание объекта логера для записи событий
 logger = logging.getLogger("utils")

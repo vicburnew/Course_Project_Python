@@ -1,11 +1,10 @@
-import json
-from typing import Optional
 import datetime
+import json
+import logging
+from typing import Optional
 
 import pandas as pd
 from pandas import DataFrame
-import logging
-
 
 # Создание объекта логера для записи событий
 logger = logging.getLogger("reports")
@@ -16,9 +15,11 @@ file_formatter = logging.Formatter("%(asctime)s - %(name)s - %(levelname)s - %(m
 file_handler.setFormatter(file_formatter)
 logger.addHandler(file_handler)
 
-def log_report(filename:str):
+
+def log_report(filename: str):
     """Декоратор для функций-отчетов, записывающий в файл результат, который
     возвращает функция, формирующая отчет. Принимает имя файла в качестве параметра."""
+
     def decorator(function):
         def wrapper(*args, **kwargs):
             try:
@@ -31,7 +32,9 @@ def log_report(filename:str):
                 print(f"Ошибка записи, код ошибки {ex}")
             logger.info(f"Функция {function.__name__} завершена успешно")
             return result
+
         return wrapper
+
     return decorator
 
 
@@ -62,20 +65,21 @@ def spending_by_category(input_df: DataFrame, input_cat: str, input_date: Option
     df_filtered_by_dates = input_df[
         (pd.to_datetime(input_df["Дата операции"], dayfirst=True) <= start_date_pd)
         & (pd.to_datetime(input_df["Дата операции"], dayfirst=True) >= end_date_pd)
-        ]
+    ]
     # Производим выборку (фильтрацию) df по заданной категории:
     df_filtered_by_cat = df_filtered_by_dates[df_filtered_by_dates["Категория"] == input_cat.title()]
     # Отфильтровываем строки с "положительным расходом" ("Сумма платежа" > 0):
     df_filtered_by_cat_expns = df_filtered_by_cat[df_filtered_by_cat["Сумма платежа"] < 0]
     # Вычисляем сумму трат по заданной категории:
-    sum_exp = df_filtered_by_cat_expns.agg({"Сумма платежа":"sum"}) * -1
+    sum_exp = df_filtered_by_cat_expns.agg({"Сумма платежа": "sum"}) * -1
     sum_exp_float = round(float(sum_exp.iloc[0]), 2)
     # Формируем строку для вывода ответа JSON:
-    result_dict = {"category":input_cat,
-                    "start_date":str(start_date_pd),
-                    "end_date":str(end_date_pd),
-                    "total_expenses":sum_exp_float
-                   }
+    result_dict = {
+        "category": input_cat,
+        "start_date": str(start_date_pd),
+        "end_date": str(end_date_pd),
+        "total_expenses": sum_exp_float,
+    }
     spending_by_category_result = json.dumps(result_dict, ensure_ascii=False, indent=4)
     logger.info("Функция spending_by_category завершена успешно")
     return spending_by_category_result
@@ -86,4 +90,3 @@ def spending_by_category(input_df: DataFrame, input_cat: str, input_date: Option
 # b = spending_by_category(a, "переводЫ", '2021-04-30')
 # print(b)
 #
-

@@ -1,19 +1,11 @@
-import pandas as pd
-from unittest.mock import patch
 import datetime
+from unittest.mock import patch
 
-
-from src.utils import (
-    read_excel_file,
-    time_of_a_day,
-    summary_by_card,
-    filter_df_by_date,
-    top_5_transactions,
-    get_currency_rates,
-    get_stock_prices,
-)
+import pandas as pd
 import pytest
 
+from src.utils import (filter_df_by_date, get_currency_rates, get_stock_prices, read_excel_file, summary_by_card,
+                       time_of_a_day, top_5_transactions)
 
 # Тестирование функции read_excel_file
 mock_data_df = pd.DataFrame(

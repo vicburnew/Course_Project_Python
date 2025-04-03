@@ -1,5 +1,5 @@
-import pytest
 import pandas as pd
+import pytest
 
 
 @pytest.fixture
@@ -250,27 +250,26 @@ def fixt_test_df_2():
         }
     )
 
+
 @pytest.fixture
 def result_spndg_by_cat_1():
-    return ('{\n'
- '    "category": "переводы",\n'
- '    "start_date": "2021-12-25 23:59:59",\n'
- '    "end_date": "2021-09-26 23:59:59",\n'
- '    "total_expenses": 6955.0\n'
- '}')
+    return (
+        "{\n"
+        '    "category": "переводы",\n'
+        '    "start_date": "2021-12-25 23:59:59",\n'
+        '    "end_date": "2021-09-26 23:59:59",\n'
+        '    "total_expenses": 6955.0\n'
+        "}"
+    )
+
 
 @pytest.fixture
 def result_spndg_by_cat_2():
-    return ('{\n'
- '    "category": "переводы",\n'
- '    "start_date": "2025-04-03 23:59:59",\n'
- '    "end_date": "2025-01-03 23:59:59",\n'
- '    "total_expenses": -0.0\n'
- '}')
-
-
-@pytest.fixture
-def result_spndg_by_cat_3():
-    return
-
-
+    return (
+        "{\n"
+        '    "category": "переводы",\n'
+        '    "start_date": "2025-04-03 23:59:59",\n'
+        '    "end_date": "2025-01-03 23:59:59",\n'
+        '    "total_expenses": -0.0\n'
+        "}"
+    )

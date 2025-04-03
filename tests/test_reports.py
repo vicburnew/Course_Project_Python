@@ -1,14 +1,13 @@
+import datetime
 import json
+from unittest.mock import patch
 
 import pytest
-from unittest.mock import patch
-from src.reports import spending_by_category, log_report
-from tests.conftest import fixt_test_df_2, result_spndg_by_cat_1, result_spndg_by_cat_2, result_spndg_by_cat_3
-import datetime
 
-@pytest.mark.parametrize("cat_, date_", [
-            ("переводы", "2021-12-25")
-            ])
+from src.reports import spending_by_category
+
+
+@pytest.mark.parametrize("cat_, date_", [("переводы", "2021-12-25")])
 def test_spending_by_category_1(fixt_test_df_2, cat_, date_, result_spndg_by_cat_1):
     """Тестирование работы функции с введенной датой"""
     a = spending_by_category(fixt_test_df_2, cat_, date_)
@@ -36,5 +35,3 @@ def test_log_report_1(fixt_test_df_2, result_spndg_by_cat_1):
     with open("./reports/report.json", "r", encoding="utf-8") as file:
         record = json.load(file)
         assert record == result
-
-
