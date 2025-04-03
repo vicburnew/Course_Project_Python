@@ -1,6 +1,8 @@
+import json
+
 import pytest
 from unittest.mock import patch
-from src.reports import spending_by_category
+from src.reports import spending_by_category, log_report
 from tests.conftest import fixt_test_df_2, result_spndg_by_cat_1, result_spndg_by_cat_2, result_spndg_by_cat_3
 import datetime
 
@@ -26,4 +28,13 @@ def test_spending_by_category_3(fixt_test_df_2):
     """Отрицательное тестирование функции"""
     with pytest.raises(Exception):
         spending_by_category(fixt_test_df_2, "переводы", "2021-05-32")
+
+
+def test_log_report_1(fixt_test_df_2, result_spndg_by_cat_1):
+    """Положительный тест декоратора на вывод в файл"""
+    result = spending_by_category(fixt_test_df_2, "переводы", "2021-12-25")
+    with open("./reports/report.json", "r", encoding="utf-8") as file:
+        record = json.load(file)
+        assert record == result
+
 

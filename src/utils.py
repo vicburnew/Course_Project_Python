@@ -11,7 +11,7 @@ import logging
 logger = logging.getLogger("utils")
 logger.setLevel(logging.DEBUG)
 # При запуске Pytest исправить путь к имени файла: "./logs/utils.log"
-file_handler = logging.FileHandler("../logs/utils.log", "w", encoding="utf-8")
+file_handler = logging.FileHandler("./logs/utils.log", "w", encoding="utf-8")
 file_formatter = logging.Formatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s")
 file_handler.setFormatter(file_formatter)
 logger.addHandler(file_handler)

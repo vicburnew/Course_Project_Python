@@ -1,2 +1,20 @@
-2025-04-03 09:45:50,102 - reports - INFO - Начало функций spending_by_category
-2025-04-03 09:45:50,102 - reports - ERROR - Ошибка ввода даты: unconverted data remains: 2
+2025-04-03 14:49:15,350 - reports - INFO - Начало функции spending_by_category
+2025-04-03 14:49:15,351 - reports - INFO - Начало функции spending_by_category
+2025-04-03 14:49:15,369 - reports - INFO - Функция spending_by_category завершена успешно
+2025-04-03 14:49:15,370 - reports - ERROR - Ошибка записи, ошибка: [Errno 2] No such file or directory: '../reports/report.json'
+2025-04-03 14:49:15,370 - reports - INFO - Функция spending_by_category завершена успешно
+2025-04-03 14:49:15,377 - reports - INFO - Начало функции spending_by_category
+2025-04-03 14:49:15,377 - reports - INFO - Начало функции spending_by_category
+2025-04-03 14:49:15,383 - reports - INFO - Функция spending_by_category завершена успешно
+2025-04-03 14:49:15,384 - reports - ERROR - Ошибка записи, ошибка: [Errno 2] No such file or directory: '../reports/report.json'
+2025-04-03 14:49:15,384 - reports - INFO - Функция spending_by_category завершена успешно
+2025-04-03 14:49:15,387 - reports - INFO - Начало функции spending_by_category
+2025-04-03 14:49:15,387 - reports - INFO - Начало функции spending_by_category
+2025-04-03 14:49:15,387 - reports - ERROR - Ошибка ввода даты: unconverted data remains: 2
+2025-04-03 14:49:15,388 - reports - ERROR - Ошибка записи, ошибка: cannot access local variable 'start_date_obj_0' where it is not associated with a value
+2025-04-03 14:49:15,388 - reports - INFO - Функция spending_by_category завершена успешно
+2025-04-03 14:49:15,392 - reports - INFO - Начало функции spending_by_category
+2025-04-03 14:49:15,392 - reports - INFO - Начало функции spending_by_category
+2025-04-03 14:49:15,397 - reports - INFO - Функция spending_by_category завершена успешно
+2025-04-03 14:49:15,397 - reports - ERROR - Ошибка записи, ошибка: [Errno 2] No such file or directory: '../reports/report.json'
+2025-04-03 14:49:15,397 - reports - INFO - Функция spending_by_category завершена успешно
