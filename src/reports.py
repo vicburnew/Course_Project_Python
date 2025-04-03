@@ -4,15 +4,26 @@ import datetime
 
 import pandas as pd
 from pandas import DataFrame
+import logging
 
 from src.utils import read_excel_file
+
+# Создание объекта логера для записи событий
+logger = logging.getLogger("reports")
+logger.setLevel(logging.DEBUG)
+# При запуске Pytest исправить путь к имени файла: "./logs/reports.log"
+file_handler = logging.FileHandler("../logs/reports.log", "w", encoding="utf-8")
+file_formatter = logging.Formatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s")
+file_handler.setFormatter(file_formatter)
+logger.addHandler(file_handler)
 
 
 def spending_by_category(input_df: DataFrame, input_cat: str, input_date: Optional[str] = None) -> json:
     """Функция принимает на вход датафрейм с транзакциями, название категории, опциональную дату
     в формате "YYYY-MM-DD".
-    Если дата не передана, то берется текущая дата. Функция возвращает DataFrame по заданной
+    Если дата не передана, то берется текущая дата. Функция возвращает строку JSON с тратами по заданной
     категории за последние три месяца (от переданной даты)."""
+    logger.info("Начало функций spending_by_category")
 
     # Определяем исходную дату для выборки
     if input_date is None:
@@ -21,6 +32,7 @@ def spending_by_category(input_df: DataFrame, input_cat: str, input_date: Option
         try:
             start_date_obj_0 = datetime.datetime.strptime(input_date, "%Y-%m-%d")
         except Exception as ex:
+            logger.error(f"Ошибка ввода даты: {ex}")
             print(f"Ошибка ввода даты: {ex}")
     # Изменяем в объекте времени-даты время на максимальное:
     start_date_obj = start_date_obj_0.replace(hour=23, minute=59, second=59)
@@ -47,6 +59,7 @@ def spending_by_category(input_df: DataFrame, input_cat: str, input_date: Option
                     "total_expenses":sum_exp_float
                    }
     spending_by_category_result = json.dumps(result_dict, ensure_ascii=False, indent=4)
+    logger.info("Функция spending_by_category завершена успешно")
     return spending_by_category_result
 
 
