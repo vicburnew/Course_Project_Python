@@ -1,0 +1,20 @@
+2025-04-03 15:11:50,697 - reports - INFO - Начало функции spending_by_category
+2025-04-03 15:11:50,698 - reports - INFO - Начало функции spending_by_category
+2025-04-03 15:11:50,715 - reports - INFO - Функция spending_by_category завершена успешно
+2025-04-03 15:11:50,716 - reports - ERROR - Ошибка записи, ошибка: [Errno 2] No such file or directory: '../reports/report.json'
+2025-04-03 15:11:50,716 - reports - INFO - Функция spending_by_category завершена успешно
+2025-04-03 15:11:50,723 - reports - INFO - Начало функции spending_by_category
+2025-04-03 15:11:50,723 - reports - INFO - Начало функции spending_by_category
+2025-04-03 15:11:50,730 - reports - INFO - Функция spending_by_category завершена успешно
+2025-04-03 15:11:50,730 - reports - ERROR - Ошибка записи, ошибка: [Errno 2] No such file or directory: '../reports/report.json'
+2025-04-03 15:11:50,730 - reports - INFO - Функция spending_by_category завершена успешно
+2025-04-03 15:11:50,734 - reports - INFO - Начало функции spending_by_category
+2025-04-03 15:11:50,734 - reports - INFO - Начало функции spending_by_category
+2025-04-03 15:11:50,734 - reports - ERROR - Ошибка ввода даты: unconverted data remains: 2
+2025-04-03 15:11:50,734 - reports - ERROR - Ошибка записи, ошибка: cannot access local variable 'start_date_obj_0' where it is not associated with a value
+2025-04-03 15:11:50,734 - reports - INFO - Функция spending_by_category завершена успешно
+2025-04-03 15:11:50,737 - reports - INFO - Начало функции spending_by_category
+2025-04-03 15:11:50,737 - reports - INFO - Начало функции spending_by_category
+2025-04-03 15:11:50,742 - reports - INFO - Функция spending_by_category завершена успешно
+2025-04-03 15:11:50,742 - reports - ERROR - Ошибка записи, ошибка: [Errno 2] No such file or directory: '../reports/report.json'
+2025-04-03 15:11:50,743 - reports - INFO - Функция spending_by_category завершена успешно
